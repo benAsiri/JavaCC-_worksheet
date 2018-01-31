@@ -1,0 +1,79 @@
+PARSER_BEGIN(SimpleJavaParser)
+
+public class SimpleJavaParser
+{
+	//global variables
+	private static int total = 0;
+	private static int count = 0;
+	private static int max = 0;
+
+    public static void main(String args[]) throws ParseException
+    {
+        new SimpleJavaParser(System.in).input();
+        System.out.println("The input is valid Duuuuuuuuuuuuuude.");
+		
+		System.out.println("Average is :"+total/count);
+		System.out.println("Maximum is :"+max);
+    }
+}
+
+PARSER_END(SimpleJavaParser)
+
+SKIP : { " " | "\n" | "\r" | "\t" }
+
+TOKEN :
+{
+    < PUBLIC: "public" > |
+    < CLASS: "class" > |
+	< ABS: "abstract" > |	
+	< METHODTYPE: "void" | "int" | "double"> |	
+    < LBRACE: "{" > |
+    < RBRACE: "}" > |
+	< OPEN: "("> |
+	< CLOSE: ")"> |
+	< COMMA: "," > |
+    < IDENTIFIER: ["a"-"z","A"-"Z"](["a"-"z","A"-"Z","0"-"9"])* >
+}
+
+void input() :
+{
+	Token m;
+}
+{
+    <PUBLIC> (<ABS>)? <CLASS>  (m=<IDENTIFIER>){count++;}
+	{		
+		total=m.image.length();
+		
+		if(max<total){
+			max=total;
+		}
+	}
+	
+	
+    <LBRACE> 	
+		
+		(method())*
+	
+	<RBRACE>
+	{
+		System.out.println(m);
+	}
+}
+void method():
+{
+	Token t;
+}
+{
+	<PUBLIC> <METHODTYPE> (t=<IDENTIFIER>)
+	{count++;}
+	{
+		total=t.image.length();
+		if(max<total){
+			max=total;
+		}
+	}
+	<OPEN><CLOSE>
+	<LBRACE> 
+		
+	<RBRACE> {System.out.println(t);}
+}
