@@ -67,7 +67,8 @@ void method():
 	<PUBLIC> <METHODTYPE> (t=<IDENTIFIER>)
 	{count++;}
 	{
-		total=t.image.length();
+		total+=t.image.length();
+
 		if(max<total){
 			max=total;
 		}
